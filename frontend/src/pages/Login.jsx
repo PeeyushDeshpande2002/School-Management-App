@@ -16,12 +16,8 @@ const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // useEffect(()=>{
-  //   if(user && user.role == role){
-  //     navigate('/')
-  // }})
+  
   const handleFormSubmit = async(data) => {
-    ;
     dispatch(setLoading(true));
     const form = {
       email : data.email,
