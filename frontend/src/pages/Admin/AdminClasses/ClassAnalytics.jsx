@@ -1,23 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, ToggleButtonGroup, ToggleButton, TextField, MenuItem, Button, Grid } from "@mui/material";
-import { Pie, Bar,  } from "react-chartjs-2";
-import { Chart as ChartJS, registerables } from "chart.js";
+import React, { useEffect, useState } from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from "chart.js";
+import { Pie, Bar } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
 import { CLASS_API_ENDPOINT } from "../../../utils/constant";
-// ChartJS.register(...registerables);
+
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
 const ClassAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
-  const [month, setMonth] = useState("");
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [viewType, setViewType] = useState("monthly"); // 'monthly' or 'yearly'
+  const [isMonthly, setIsMonthly] = useState(true);
   const params = useParams();
   const classId = params.id;
+
   const fetchAnalytics = async () => {
     try {
       const queryParams = new URLSearchParams({ month, year }).toString();
-      const response = await fetch(`${CLASS_API_ENDPOINT}/${classId}/analytics?${queryParams}`,{
-        credentials : 'include'
+      const response = await fetch(`${CLASS_API_ENDPOINT}/${classId}/analytics?${queryParams}`, {
+        credentials: "include",
       });
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+      }
       const data = await response.json();
       setAnalyticsData(data);
     } catch (error) {
@@ -27,148 +40,105 @@ const ClassAnalytics = () => {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [month, year, viewType]);
+  }, [month, year]);
 
-  if (!analyticsData) return <Typography>Loading...</Typography>;
+  if (!analyticsData) {
+    return <p>Loading...</p>;
+  }
 
-  // Chart Data Configurations
-  const genderPieData = {
+  const pieDataGender = {
     labels: ["Male", "Female"],
     datasets: [
       {
-        label: "Gender Ratio",
+        label: "Gender Distribution",
         data: [analyticsData.maleCount, analyticsData.femaleCount],
-        backgroundColor: ["#42a5f5", "#f06292"],
+        backgroundColor: ["#36A2EB", "#FF6384"],
       },
     ],
   };
 
-  const genderBarData = {
+  const barDataGender = {
     labels: ["Male", "Female"],
     datasets: [
       {
-        label: "Students",
+        label: "Gender Count",
         data: [analyticsData.maleCount, analyticsData.femaleCount],
-        backgroundColor: ["#42a5f5", "#f06292"],
+        backgroundColor: ["#36A2EB", "#FF6384"],
       },
     ],
   };
 
-  const feesSalaryPieData = {
-    labels: ["Total Fees", "Total Salary"],
+  const pieDataFeesSalary = {
+    labels: ["Fees", "Salary"],
     datasets: [
       {
         label: "Fees vs Salary",
         data: [analyticsData.totalFees, analyticsData.totalSalary],
-        backgroundColor: ["#66bb6a", "#ff7043"],
+        backgroundColor: ["#FFCE56", "#4BC0C0"],
       },
     ],
   };
 
-  const feesSalaryBarData = {
+  const barDataFeesSalary = {
     labels: ["Fees", "Salary"],
     datasets: [
       {
-        label: viewType === "monthly" ? "Monthly Amount" : "Yearly Amount",
-        data: [analyticsData.totalFees, analyticsData.totalSalary],
-        backgroundColor: ["#66bb6a", "#ff7043"],
+        label: "Monthly Amount",
+        data: isMonthly
+          ? [analyticsData.totalFees, analyticsData.totalSalary]
+          : [analyticsData.totalFees * 12, analyticsData.totalSalary * 12],
+        backgroundColor: ["#FFCE56", "#4BC0C0"],
       },
     ],
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Class Analytics
-      </Typography>
-
-      {/* Gender Analysis */}
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>
-            Gender Ratio (Pie Chart)
-          </Typography>
-          <Pie data={genderPieData} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h6" gutterBottom>
-            Gender Ratio (Bar Graph)
-          </Typography>
-          <Bar data={genderBarData} />
-        </Grid>
-      </Grid>
-
-      {/* Fees and Salary */}
-      <Box sx={{ mt: 5 }}>
-        <Typography variant="h6" gutterBottom>
-          View Options
-        </Typography>
-        <ToggleButtonGroup
-          value={viewType}
-          exclusive
-          onChange={(e, newValue) => setViewType(newValue || viewType)}
-          sx={{ mb: 2 }}
-        >
-          <ToggleButton value="monthly">Monthly</ToggleButton>
-          <ToggleButton value="yearly">Yearly</ToggleButton>
-        </ToggleButtonGroup>
-
-        <Grid container spacing={3} alignItems="center" sx={{ mb: 3 }}>
-          {viewType === "monthly" && (
-            <Grid item xs={6}>
-              <TextField
-                label="Select Month"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                fullWidth
-                select
-              >
-                {Array.from({ length: 12 }, (_, i) => (
-                  <MenuItem key={i + 1} value={i + 1}>
-                    {new Date(0, i).toLocaleString("default", { month: "long" })}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          )}
-          <Grid item xs={6}>
-            <TextField
-              label="Select Year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              fullWidth
-              select
-            >
-              {Array.from({ length: 10 }, (_, i) => (
-                <MenuItem key={i} value={new Date().getFullYear() - i}>
-                  {new Date().getFullYear() - i}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" onClick={fetchAnalytics}>
-              Refresh Data
-            </Button>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" gutterBottom>
-              Fees vs Salary (Pie Chart)
-            </Typography>
-            <Pie data={feesSalaryPieData} />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" gutterBottom>
-              Fees vs Salary (Bar Graph)
-            </Typography>
-            <Bar data={feesSalaryBarData} />
-          </Grid>
-        </Grid>
-      </Box>
-    </Box>
+    <div style={{ padding: "20px", maxWidth: "800px", maxHeight : '75vh', margin: "0 auto", marginTop : '' }}>
+      <div style={{ display: "flex", justifyContent: "space-around",  }}>
+        {/* Make Pie and Bar charts smaller by setting width and height */}
+        <div style={{ width: "200px", height: "200px" }}>
+          <Pie data={pieDataGender} />
+        </div>
+        <div style={{ width: "350px", height: "350px" }}>
+          <Bar data={barDataGender} />
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-around", }}>
+        <div style={{ width: "200px", height: "200px" }}>
+          <Pie data={pieDataFeesSalary} />
+        </div>
+        <div style={{ width: "300px", height: "300px" }}>
+          <Bar data={barDataFeesSalary} />
+        </div>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <label>
+          View:
+          <select onChange={(e) => setIsMonthly(e.target.value === "monthly")}>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </label>
+        <label>
+          Month:
+          <input
+            type="number"
+            min="1"
+            max="12"
+            value={month}
+            onChange={(e) => setMonth(Number(e.target.value))}
+          />
+        </label>
+        <label>
+          Year:
+          <input
+            type="number"
+            value={year}
+            onChange={(e) => setYear(Number(e.target.value))}
+          />
+        </label>
+      </div>
+    </div>
   );
 };
 
