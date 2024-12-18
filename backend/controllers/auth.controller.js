@@ -43,7 +43,7 @@ export const register = async (req, res) => {
           email: email,
         });
         if (existingTeacher) {
-          res.josn({ message: "Teacher already exists" });
+          res.json({ message: "Teacher already exists" });
         } else {
           const teacher = new Teacher({
             name: name,
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
           });
           let result = await teacher.save();
           result.password = undefined;
-          res.status(200).json(result);
+          res.status(200).json({message :"Teacher Created Successfully"},result);
         }
       } else if (role == "Admin") {
         // console.log('I m here');

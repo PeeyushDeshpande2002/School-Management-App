@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GenericTable from "../../../shared/GenericTable";
 import { ADMIN_API_ENDPOINT } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
@@ -60,6 +61,7 @@ const Teachers = () => {
         onEdit={handleEdit}
         onRowClick={onClick}
       />
+      <Button onClick = {()=>{navigate('/admin/teachers/create')}}>Create Teacher</Button>
     </>
   );
 };

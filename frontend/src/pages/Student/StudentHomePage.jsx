@@ -1,15 +1,19 @@
 import { Button } from '@mui/material'
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {setUser, setLoading} from '../../redux/auth/authSlice'
 import { useSnackbar } from 'notistack';
+import Navbar from '../../Navbar';
+import { STUDENT_API_ENDPOINT } from '../../utils/constant';
+import GenericTable from '../../shared/GenericTable'
 const StudentHomePage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const{enqueueSnackbar} = useSnackbar();
-  const logoutHandler = async () => {
-    
+  const { user, loading } =  useSelector((store) => store.auth);
+  const[classes, setClasses] = useState([]);
+  const logoutHandler = async () => { 
     try {
       const res = await fetch("http://localhost:8000/api/user/logout", {
         methods: "GET",
@@ -26,9 +30,38 @@ const StudentHomePage = () => {
       enqueueSnackbar("Logout failed!", { variant: "error" });
     }
   };
+  const studentClasses = async() => {
+    try {
+      console.log('I m here');
+      const res = await fetch(`${STUDENT_API_ENDPOINT}`, {
+        method : 'GET', 
+        credentials : 'include'
+      })
+      if(res.ok){
+        const data = await res.json();
+        setClasses(data);
+      }
+    } catch (error) {
+      console.log(error);   
+    }
+  }
+  useEffect(()=>{
+    studentClasses();
+  },[])
+  const columns = [
+    { field: "name", headerName: "Class Name" },
+    { field: "teacherName", headerName: "Teacher" },
+    {field : 'year', headerName:"Year"}
+  ];
   return (
     <div>
-      <Button onClick={logoutHandler}>Logout</Button>
+      <Navbar onLogout={logoutHandler}/>
+      <GenericTable
+      columns={columns}
+      data={classes}
+      onDelete={()=>{}}
+      onEdit={()=>{}}
+      onRowClick={()=>{}}/>
     </div>
   )
 }

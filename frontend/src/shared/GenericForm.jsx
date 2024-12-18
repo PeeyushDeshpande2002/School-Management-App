@@ -15,16 +15,16 @@ const GenericForm = ({ title, fields, onSubmit }) => {
     e.preventDefault();
     onSubmit(formData);
   };
-
+  
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '75vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
-        px: 2,
+        //background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
+       // px: 2,
         
       }}
     >

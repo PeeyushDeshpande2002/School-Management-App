@@ -36,3 +36,17 @@ export const getStudentDetail = async (req, res) => {
   }
 };
 
+export const studentClasses = async(req, res)=>{
+  try {
+    const classes = await Student.findById(req.id).select("className") .populate('className');
+    if (!classes) {
+      return res.status(404).json({ message: "Classes not found" });
+    }
+
+    res.status(200).json(classes.className)
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+

@@ -13,6 +13,8 @@ import StudentDetail from './AdminSudents/StudentDetail';
 import TeacherDetail from './AdminTeacher/TeacherDetail';
 import ClassDetail from './AdminClasses/ClassDetail';
 import ClassAnalytics from './AdminClasses/ClassAnalytics';
+import CreateStudent from './AdminSudents/CreateStudent';
+import CreateTeacher from './AdminTeacher/CreateTeacher';
 
 const AdminHomePage = () => {
     return (
@@ -49,6 +51,9 @@ const AdminHomePage = () => {
                     <Route path = '/teachers' element ={<Teachers/>}/>
                     <Route path='/teachers/:id' element = {<TeacherDetail/>}/>
                     <Route path = '/classes/:id/analytics' element= {<ClassAnalytics/>}/>
+                    <Route path = '/students/create' element = {<CreateStudent/>}/>
+                    <Route path = '/teachers/create' element = {<CreateTeacher/>}/>
+
                 </Routes>
             </Box>
         </Box>

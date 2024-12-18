@@ -3,6 +3,7 @@ import GenericForm from "../../../shared/GenericForm";
 import GenericTable from "../../../shared/GenericTable";
 import { ADMIN_API_ENDPOINT } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -60,6 +61,7 @@ const onClick = (student) =>{
         onEdit={handleEdit}
         onRowClick={onClick}
       />
+      <Button onClick ={() => {navigate('/admin/students/create')}}>Create Student</Button>
     </>
   );
 };
