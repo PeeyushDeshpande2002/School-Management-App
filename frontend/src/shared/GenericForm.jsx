@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Paper, MenuItem } from '@mui/material';
+import { Box, Button, TextField, Typography, Paper, MenuItem, Grid } from '@mui/material';
 
 const GenericForm = ({ title, fields, onSubmit }) => {
   const [formData, setFormData] = useState(
@@ -15,54 +15,61 @@ const GenericForm = ({ title, fields, onSubmit }) => {
     e.preventDefault();
     onSubmit(formData);
   };
-  
+
   return (
     <Box
       sx={{
-        minHeight: '75vh',
+        height: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        //background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
-       // px: 2,
-        
+        background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
       }}
     >
-      <Paper elevation={4} sx={{ p: 4, maxWidth: 500, width: '100%', borderRadius: 2 }}>
-        <Typography variant="h5" align="center" gutterBottom>
+      <Paper elevation={4} sx={{ p: 4, maxWidth: 500, borderRadius: 2 }}>
+        <Typography variant="h6" align="center" gutterBottom>
           {title}
         </Typography>
         <form onSubmit={handleSubmit}>
-          {fields.map((field) => (
-            field.type === 'select' ? (
-              <TextField
-                  key={field.name}
-                  select
-                  label={field.label}
-                  name={field.name}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  fullWidth
-                  margin="normal"
-              >
-                  {field.options.map((option) => (
-                      <MenuItem key={option.id} value={option.id}>{option.label}</MenuItem>
-                  ))}
-              </TextField>)
-              : (<TextField
+          <Grid container spacing={2}>
+            {fields.map((field, index) => (
+              <Grid 
+                item 
+                xs={fields.length >= 4 ? 6 : 12} // Two columns if fields >= 4, else full width
                 key={field.name}
-                label={field.label}
-                name={field.name}
-                type={field.type || 'text'}
-                value={formData[field.name]}
-                onChange={handleChange}
-                fullWidth
-                margin="normal"
-                variant="outlined"
-                required={field.required}
-              />)
-            
-          ))}
+              >
+                {field.type === 'select' ? (
+                  <TextField
+                    select
+                    label={field.label}
+                    name={field.name}
+                    value={formData[field.name] || ''}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                  >
+                    {field.options.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : (
+                  <TextField
+                    label={field.label}
+                    name={field.name}
+                    type={field.type || 'text'}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    required={field.required}
+                  />
+                )}
+              </Grid>
+            ))}
+          </Grid>
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Button type="submit" variant="contained" color="primary">
               Submit

@@ -18,7 +18,7 @@ import CreateTeacher from './AdminTeacher/CreateTeacher';
 
 const AdminHomePage = () => {
     return (
-        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', minHeight: '100vh', width : 1280, color :'black' }}>
             {/* Sidebar Section */}
             <Box
                 sx={{

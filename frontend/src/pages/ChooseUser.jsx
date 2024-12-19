@@ -14,8 +14,12 @@ export default function ChooseUser() {
 
   return (
     <Box 
+    maxWidth = 'xl'
       sx={{
         height: '100vh',
+        width : 1280,
+        margin : 0,
+        padding : 0,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

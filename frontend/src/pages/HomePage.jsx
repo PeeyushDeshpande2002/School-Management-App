@@ -11,9 +11,8 @@ const Homepage = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100vh',
-                width : '100%',
-                backgroundColor: 'white',
+                
+                //backgroundColor: 'white',
                 margin: 0,
                 padding: 0,
             }}
