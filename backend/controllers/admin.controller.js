@@ -69,13 +69,12 @@ export const deleteStudent = async(req, res) =>{
           { new: true }
         );
     
-        if (!foundClass) {
-          return res.status(404).json({ message: 'Associated class not found' });
-        }
+        await foundClass.save()
         await Student.findByIdAndDelete(id);
     res.status(200).json({message : 'Student has been deleted!'});
   } catch (error) {
-      console.log(error.message);  
+      console.log(error.message); 
+      res.status(500).json({message : error.message}); 
   }
 };
 
@@ -143,7 +142,7 @@ export const deleteTeacher = async (req, res, next) => {
     res.status(200).json({ message: 'Teacher has been deleted' });
   } catch (error) {
     console.log(error.message);
-    ;
+    res.status(500).json({message : error.message});
   }
 };
 

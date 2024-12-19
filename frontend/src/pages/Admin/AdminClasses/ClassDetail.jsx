@@ -11,7 +11,6 @@ const ClassDetail = () => {
    const [singleClass, setSingleClass] = useState();
     //console.log(classes, row);
     const getClass = async() => {
-        console.log('imhere');
         try {
             const res = await fetch(`${CLASS_API_ENDPOINT}/${params.id}`, {
                 method : 'GET',
@@ -34,8 +33,6 @@ const ClassDetail = () => {
         getClass()
     },[])
    const handleDelete =()=>{};
-   const handleEdit = () =>{};
-   const onClick = () => {};
    const columns = [
     { field: "name", headerName: "Name" },
     { field: "gender", headerName: "Gender" },
@@ -128,7 +125,6 @@ const ClassDetail = () => {
                   columns={columns}
                   data={singleClass.student}
                   onDelete={handleDelete}
-                  onRowClick={onClick}
                   actions={{delete : true}}/>
                 </Grid>
               </Grid>

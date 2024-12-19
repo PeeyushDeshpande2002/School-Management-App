@@ -104,7 +104,7 @@ const GenericTable = ({
                           size="small"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onDelete(row.id);
+                            onDelete(row._id);
                           }}
                         >
                           Delete

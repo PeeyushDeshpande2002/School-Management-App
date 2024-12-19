@@ -30,3 +30,23 @@ export const getTeacherDetail = async(req, res)=>{
         
     }
 }
+export const teacherClasses = async(req, res)=>{
+  try {
+    const classes = await Teacher.findById(req.id).select("teachClasses") .populate('teachClasses');
+    if (!classes) {
+      return res.status(404).json({ message: "Classes not found" });
+    }
+    const classesWithStudentCount = classes.teachClasses.map((cls) => ({
+      _id: cls._id,
+      name: cls.name,
+      year: cls.year,
+      studentCount: cls.student.length, // Adding student count
+      teacher: cls.teacher,
+    }));
+
+    res.status(200).json({classes : classes.teachClasses, classesWithStudentCount})
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

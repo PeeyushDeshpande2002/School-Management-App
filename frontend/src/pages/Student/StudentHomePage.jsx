@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Container } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -53,13 +53,22 @@ const StudentHomePage = () => {
     {field : 'year', headerName:"Year"}
   ];
   return (
-    <div>
+    <div style={{width :  1260}}>
       <Navbar onLogout={logoutHandler}/>
+      <Container 
+      sx={{
+        height: '100vh',
+        //background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
+        marginTop : '5rem'
+      }}>
+      
       <GenericTable
       columns={columns}
       data={classes}
       onRowClick={()=>{}}/>
+      </Container>
     </div>
+    
   )
 }
 

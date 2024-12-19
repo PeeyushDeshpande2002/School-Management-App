@@ -93,7 +93,7 @@ const ClassAnalytics = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", maxHeight : '75vh', margin: "0 auto", marginTop : '' }}>
+    <div style={{ padding: "20px", maxWidth: "800px", maxHeight : '120vh', margin: "0 auto", marginTop : '' }}>
       <div style={{ display: "flex", justifyContent: "space-around",  }}>
         {/* Make Pie and Bar charts smaller by setting width and height */}
         <div style={{ width: "200px", height: "200px" }}>

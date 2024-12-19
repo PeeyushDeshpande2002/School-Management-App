@@ -3,10 +3,12 @@ import GenericTable from "../../../shared/GenericTable";
 import { ADMIN_API_ENDPOINT } from "../../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {enqueueSnackbar} = useSnackbar()
   const loadTeachers = async () => {
     try {
       const res = await fetch(`${ADMIN_API_ENDPOINT}/teachers`, {
@@ -30,14 +32,23 @@ const Teachers = () => {
     loadTeachers();
   }, []); // Dependency array to prevent repeated calls
 
-  const handleDelete = (id) => {
+  const handleDelete = async(id) => {
     console.log(`Delete student with ID: ${id}`);
     // Implement delete logic
-  };
-
-  const handleEdit = (id) => {
-    console.log(`Edit student with ID: ${id}`);
-    // Implement edit logic
+    try {
+      const res = await fetch(`${ADMIN_API_ENDPOINT}/teacher/delete/${id}`, {
+        method : 'DELETE',
+        credentials : 'include'
+      })
+      if(res.ok){
+        const data = await res.json();
+        enqueueSnackbar(data.message, {variant : 'success'})
+      }
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar(error.message, {variant : 'error'});
+      loadTeachers()
+    }
   };
   const onClick = (teacher) => {
     navigate(`/admin/teachers/${teacher._id}`, {state : teacher})

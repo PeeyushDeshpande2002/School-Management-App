@@ -5,6 +5,7 @@ import { USER_API_ENDPOINT } from '../utils/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import {setUser, setLoading} from '../redux/auth/authSlice'
+import { Container } from '@mui/material';
 const Login = () => {
   const location = useLocation();
   const role = location.state;
@@ -50,11 +51,24 @@ const Login = () => {
   };
 
   return (
+    <Container 
+    maxWidth = 'xl'
+    sx={{
+      height: '100vh',
+      width : 1280,
+      margin : 0,
+      padding : 0,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'linear-gradient(to bottom, #5f2c82, #49a09d)',
+    }}>
     <GenericForm
       title="Login"
       fields={fields}
       onSubmit={handleFormSubmit}
     />
+    </Container>
   );
 }
 
