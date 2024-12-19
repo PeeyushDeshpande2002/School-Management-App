@@ -16,6 +16,10 @@ const classSchema = new mongoose.Schema({
     teacher : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Teacher'
+    },
+    maxCount : {
+        type : Number,
+        required : true
     }
 });
 

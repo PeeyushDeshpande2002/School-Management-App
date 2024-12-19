@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { CLASS_API_ENDPOINT } from '../../../utils/constant';
+import { CLASS_API_ENDPOINT } from '../../utils/constant'
 import { Box, Card, CardContent, Typography, Grid, Paper, Avatar, Chip, Button } from "@mui/material";
 
-import GenericTable from '../../../shared/GenericTable';
-const ClassDetail = () => {
+import GenericTable from '../../shared/GenericTable';
+import Navbar from '../../Navbar';
+const StudentClassDetail = () => {
     const params = useParams();
    // console.log(params.id);
    const navigate = useNavigate();
@@ -32,16 +33,17 @@ const ClassDetail = () => {
     useEffect(()=>{
         getClass()
     },[])
-   const handleDelete =()=>{};
+   //const handleDelete =()=>{};
    const columns = [
     { field: "name", headerName: "Name" },
     { field: "gender", headerName: "Gender" },
     { field: "dob", headerName: "DOB" },
     { field: "contact", headerName: "Contact" },
-    { field: "feesPaid", headerName: "Fees Paid" }, // Correct casing
+    //{ field: "feesPaid", headerName: "Fees Paid" }, // Correct casing
   ];
   return (
-    <div>
+    <div style={{width :  1260}}>
+        <Navbar/>
         {(singleClass)?(
             <Box
             sx={{
@@ -104,13 +106,6 @@ const ClassDetail = () => {
                         <Typography variant="body1">{singleClass.student.length}</Typography>
                       </Grid>
                       <Grid item xs={12} smm={6}>
-                      <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate(`/admin/classes/${params.id}/analytics`)}
-        >
-          Get Class Analysis
-        </Button>
                       </Grid>
                     </Grid>
                   </Card>
@@ -124,8 +119,7 @@ const ClassDetail = () => {
                   <GenericTable
                   columns={columns}
                   data={singleClass.student}
-                  onDelete={handleDelete}
-                  actions={{delete : true}}/>
+                  />
                 </Grid>
               </Grid>
             </Paper>
@@ -138,4 +132,5 @@ const ClassDetail = () => {
   )
 }
 
-export default ClassDetail
+export default StudentClassDetail
+

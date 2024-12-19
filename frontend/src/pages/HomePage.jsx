@@ -1,9 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Grid, Box, Button, Typography, Paper } from '@mui/material';
 import Students from "../assets/students.svg";
+import { useSelector } from 'react-redux';
 
 const Homepage = () => {
+    const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
+
+  useEffect(() => {
+    // Redirect logged-in users to their dashboard
+    if (user) {
+      navigate(`/${user.role}`, { replace: true });
+    }
+  }, [user, navigate]);
     return (
         <Container
         maxWidth = 'xl'

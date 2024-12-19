@@ -17,14 +17,16 @@ const Students = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        setStudents(data);
+        setStudents(data || []);
         console.log(data);
         
       } else {
         console.error("Failed to fetch students");
+        setStudents([])
       }
     } catch (error) {
       console.error("Error loading students:", error);
+      setStudents([])
     }
   };
 

@@ -47,14 +47,15 @@ const GenericTable = ({
           <Table>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#5f2c82" }}>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.field}
-                    sx={{ color: "#ffffff", fontWeight: "bold" }}
-                  >
-                    {column.headerName}
-                  </TableCell>
-                ))}
+                {columns &&
+                  columns.map((column) => (
+                    <TableCell
+                      key={column.field}
+                      sx={{ color: "#ffffff", fontWeight: "bold" }}
+                    >
+                      {column.headerName}
+                    </TableCell>
+                  ))}
                 {Object.keys(actions).length > 0 && ( // Conditionally show Actions column
                   <TableCell sx={{ color: "#ffffff", fontWeight: "bold" }}>
                     Actions
@@ -64,56 +65,70 @@ const GenericTable = ({
             </TableHead>
 
             <TableBody>
-              {data.map((row) => (
-                <TableRow
-                  key={row._id}
-                  sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f3f3f3" } }}
-                  hover={!!onRowClick}
-                  onClick={() => onRowClick && onRowClick(row)}
-                  style={{ cursor: onRowClick ? "pointer" : "default" }}
-                >
-                  {columns.map((column) => (
-                    <TableCell key={column.field}>
-                      {Array.isArray(row[column.field])
-                        ? row[column.field].join(", ")
-                        : typeof row[column.field] === "object"
-                        ? JSON.stringify(row[column.field])
-                        : row[column.field] || "-"}
-                    </TableCell>
-                  ))}
-                  {Object.keys(actions).length > 0 && (
-                    <TableCell>
-                      {actions.edit && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onEdit(row);
-                          }}
-                          sx={{ mr: 1 }}
-                        >
-                          Edit
-                        </Button>
-                      )}
-                      {actions.delete && (
-                        <Button
-                          variant="contained"
-                          color="error"
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDelete(row._id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      )}
-                    </TableCell>
-                  )}
+              {Array.isArray(data) && data.length > 0 ? (
+                data.map((row) => (
+                  <TableRow
+                    key={row._id}
+                    sx={{
+                      "&:nth-of-type(odd)": { backgroundColor: "#f3f3f3" },
+                    }}
+                    hover={!!onRowClick}
+                    onClick={() => onRowClick && onRowClick(row)}
+                    style={{ cursor: onRowClick ? "pointer" : "default" }}
+                  >
+                    {columns.map((column) => (
+                      <TableCell key={column.field}>
+                        {Array.isArray(row[column.field])
+                          ? row[column.field].join(", ")
+                          : typeof row[column.field] === "object"
+                          ? JSON.stringify(row[column.field])
+                          : row[column.field] || "-"}
+                      </TableCell>
+                    ))}
+                    {Object.keys(actions).length > 0 && (
+                      <TableCell>
+                        {actions.edit && (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onEdit(row);
+                            }}
+                            sx={{ mr: 1 }}
+                          >
+                            Edit
+                          </Button>
+                        )}
+                        {actions.delete && (
+                          <Button
+                            variant="contained"
+                            color="error"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onDelete(row._id);
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        )}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={
+                      columns.length + (Object.keys(actions).length > 0 ? 1 : 0)
+                    }
+                  >
+                    <Typography align="center">No data available</Typography>
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </TableContainer>

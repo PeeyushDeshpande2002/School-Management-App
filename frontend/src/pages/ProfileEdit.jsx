@@ -1,31 +1,40 @@
 import { useSnackbar } from 'notistack';
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import GenericForm from '../shared/GenericForm';
 import Navbar from '../Navbar';
 import { Container } from '@mui/material';
-
+import {STUDENT_API_ENDPOINT} from '../utils/constant';
+import { TEACHER_API_ENDPOINT } from '../utils/constant';
 const ProfileEdit = () => {
     const {user} = useSelector((store)=>store.auth);
     const {enqueueSnackbar} = useSnackbar();
     const location = useLocation();
     const{profile} = location.state;
-    console.log(profile);
-    
+    //console.log(profile);
+    const navigate = useNavigate();
     const updateProfile = async (data) => {
+      console.log(data);
+      
         try {
           const res = await fetch(
             `${user.role === "Student" ? STUDENT_API_ENDPOINT : TEACHER_API_ENDPOINT}/update/${user._id}`,
             {
               method: "POST",
               credentials: "include",
+              headers : {
+                'Content-Type' : 'application/json'
+              },
               body : JSON.stringify(data)
             }
           );
           if (res.ok) {
             const data = await res.json();
+            console.log(data);
+            
             enqueueSnackbar(data.message, {variant: 'success'})
+            navigate(`/${user.role}/profile`)
           }
         } catch (error) {
           console.error("Error fetching profile details:", error);
@@ -66,7 +75,8 @@ const ProfileEdit = () => {
     <GenericForm
       title={`Edit ${user.role}`}
       onSubmit={updateProfile}
-      fields={fields}/>
+      fields={fields}
+      defaultValues={profile}/>
     </Container>
   </div>
   )

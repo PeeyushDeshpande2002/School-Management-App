@@ -4,11 +4,12 @@ import {Teacher} from '../models/teacher.model.js';
 import mongoose from 'mongoose';
 export const createClass = async (req, res) => {
   try {
-    const { name, year, teacher } = req.body;
+    const { name, year, teacher, maxCount } = req.body;
     const newClass = await Class.create({
       name: name,
       teacher: teacher,
       year: year,
+      maxCount : maxCount
     });
     // console.log(newClass);
 
@@ -40,7 +41,7 @@ export const updateClass = async (req, res) => {
 
   try {
     const classData = await Class.findById(classId);
-
+    
     if (!classData) return res.status(404).send("Class not found.");
 
     let previousTeacherId;

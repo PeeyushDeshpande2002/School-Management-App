@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AccountCircle, School, Group } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 const profiles = [
   { type: 'Admin', icon: <AccountCircle fontSize="large" />, path: '/login', description: 'Login as an administrator to access the dashboard to manage app data.' },
@@ -11,7 +12,14 @@ const profiles = [
 
 export default function ChooseUser() {
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
 
+  useEffect(() => {
+    // Redirect logged-in users to their dashboard
+    if (user) {
+      navigate(`/${user.role}`, { replace: true });
+    }
+  }, [user, navigate]);
   return (
     <Box 
     maxWidth = 'xl'

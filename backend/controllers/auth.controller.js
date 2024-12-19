@@ -34,7 +34,7 @@ export const register = async (req, res) => {
           let result = await student.save();
   
           result.password = undefined;
-          res.status(200).json(result);
+          res.status(200).json({message :"Student Created Successfully", result});
         }
       } else if (role == "Teacher") {
         const { name, email, gender, dob, salary, contact} =
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
           });
           let result = await teacher.save();
           result.password = undefined;
-          res.status(200).json({message :"Teacher Created Successfully"},result);
+          res.json({message :"Teacher Created Successfully", result});
         }
       } else if (role == "Admin") {
         // console.log('I m here');

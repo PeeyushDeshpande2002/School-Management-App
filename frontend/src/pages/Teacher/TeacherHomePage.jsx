@@ -9,9 +9,6 @@ import { STUDENT_API_ENDPOINT, TEACHER_API_ENDPOINT } from '../../utils/constant
 import GenericTable from '../../shared/GenericTable'
 const TeacherHomePage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const{enqueueSnackbar} = useSnackbar();
-  const { user, loading } =  useSelector((store) => store.auth);
   const[classes, setClasses] = useState([]);
   
   const teacherClasses = async() => {
@@ -32,6 +29,9 @@ const TeacherHomePage = () => {
   useEffect(()=>{
     teacherClasses();
   },[])
+  const onClick = (row) => {
+    navigate(`/teacher/class/${row._id}`);
+  }
   const columns = [
     { field: "name", headerName: "Class Name" },
     { field: "studentCount", headerName: "Student Count" },
@@ -50,7 +50,7 @@ const TeacherHomePage = () => {
       <GenericTable
       columns={columns}
       data={classes}
-      onRowClick={()=>{}}/>
+      onRowClick={onClick}/>
       </Container>
     </div>
     

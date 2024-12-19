@@ -109,7 +109,7 @@ const EditClass = () => {
             margin="normal"
             variant="outlined"
           >
-            {teachers.map((teacher) => (
+            {teachers?.map((teacher) => (
               <MenuItem key={teacher._id} value={teacher._id}>
                 {teacher.name}
               </MenuItem>
@@ -138,7 +138,7 @@ const EditClass = () => {
               onChange={(e) => handleAddStudent(e.target.value)}
               label="Select a student to add"
             >
-              {students.map((student) => (
+              {students && students.map((student) => (
                 <MenuItem key={student._id} value={student._id}>
                   {student.name}
                 </MenuItem>

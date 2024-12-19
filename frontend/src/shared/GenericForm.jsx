@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Paper, MenuItem, Grid } from '@mui/material';
 
-const GenericForm = ({ title, fields, onSubmit }) => {
+const GenericForm = ({ title, fields, onSubmit, defaultValues = {} }) => {
   const [formData, setFormData] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+    fields.reduce((acc, field) => ({ ...acc, [field.name]: defaultValues[field.name] || '' }), {})
   );
 
   const handleChange = (e) => {
@@ -32,10 +32,10 @@ const GenericForm = ({ title, fields, onSubmit }) => {
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {fields.map((field, index) => (
-              <Grid 
-                item 
-                xs={fields.length >= 4 ? 6 : 12} // Two columns if fields >= 4, else full width
+            {fields.map((field) => (
+              <Grid
+                item
+                xs={fields.length >= 4 ? 6 : 12}
                 key={field.name}
               >
                 {field.type === 'select' ? (

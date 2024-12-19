@@ -47,7 +47,7 @@ const Teachers = () => {
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error.message, {variant : 'error'});
-      loadTeachers()
+      loadTeachers();
     }
   };
   const onClick = (teacher) => {
@@ -56,7 +56,7 @@ const Teachers = () => {
   const columns = [
     { field: "name", headerName: "Name" },
     { field: "gender", headerName: "Gender" },
-    { field: "dob", headerName: "DOB" },
+    //{ field: "dob", headerName: "DOB" },
     { field: "contact", headerName: "Contact" },
     { field: "salary", headerName: "Salary" }, // Correct casing
     // { field: "teachClasses", headerName: "Classes" },

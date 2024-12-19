@@ -16,7 +16,8 @@ const CreateStudent = () => {
         dob : formData.dob,
         gender : formData.gender,
         email : formData.email,
-        password : formData.password
+        password : formData.password,
+        feesPaid : formData.feesPaid
     }
     try {
         const res = await fetch(`${USER_API_ENDPOINT}/register`,{
@@ -29,7 +30,8 @@ const CreateStudent = () => {
         });
         if(res.ok){
             const data = await res.json();
-           // console.log(data);
+            console.log(data.message);
+            
            enqueueSnackbar(data.message, { variant: "success" });
             navigate('/admin/students')
             
@@ -45,7 +47,7 @@ const CreateStudent = () => {
     { name: 'gender', label: 'Gender', type: 'text', required: true },
     { name: 'dob', label: 'DOB', type: 'text', required: true },
     { name: 'contact', label: 'Contact', type: 'text', required: true },
-    //{ name: 'name', label: 'Name', type: 'text', required: true },
+    { name: 'feesPaid', label: 'Fee', type: 'number', required: true },
     { name: 'password', label: 'Password', type: 'password', required: true }
   ];
   return (

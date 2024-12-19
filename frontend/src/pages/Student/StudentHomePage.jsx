@@ -8,11 +8,8 @@ import Navbar from '../../Navbar';
 import { STUDENT_API_ENDPOINT } from '../../utils/constant';
 import GenericTable from '../../shared/GenericTable'
 const StudentHomePage = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const{enqueueSnackbar} = useSnackbar();
-  const { user, loading } =  useSelector((store) => store.auth);
   const[classes, setClasses] = useState([]);
+  const navigate = useNavigate();
   const studentClasses = async() => {
     try {
       const res = await fetch(`${STUDENT_API_ENDPOINT}`, {
@@ -29,10 +26,14 @@ const StudentHomePage = () => {
   }
   useEffect(()=>{
     studentClasses();
-  },[])
+  },[]);
+  const onClick = (row) => {
+    console.log(row._id);
+    navigate(`/student/class/${row._id}`)
+  }
   const columns = [
     { field: "name", headerName: "Class Name" },
-    { field: "teacherName", headerName: "Teacher" },
+    //{ field: "teacherName", headerName: "Teacher" },
     {field : 'year', headerName:"Year"}
   ];
   return (
@@ -48,7 +49,7 @@ const StudentHomePage = () => {
       <GenericTable
       columns={columns}
       data={classes}
-      onRowClick={()=>{}}/>
+      onRowClick={onClick}/>
       </Container>
     </div>
     

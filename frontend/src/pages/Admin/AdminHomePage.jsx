@@ -15,6 +15,7 @@ import ClassDetail from './AdminClasses/ClassDetail';
 import ClassAnalytics from './AdminClasses/ClassAnalytics';
 import CreateStudent from './AdminSudents/CreateStudent';
 import CreateTeacher from './AdminTeacher/CreateTeacher';
+import ProtectedRoute from './ProtectedRoute';
 
 const AdminHomePage = () => {
     return (
@@ -41,18 +42,18 @@ const AdminHomePage = () => {
                 }}
             >
                 <Routes>
-                    <Route path='/' element = {<DashBoard/>}/>
-                    <Route path="/classes" element={<Classes />} />
-                    <Route path="/classes/new" element={<NewClass />} />
-                    <Route path="/students" element={<Students />} />
-                    <Route path = '/students/:id' element= {<StudentDetail/>}/>
-                    <Route path = '/classes/edit' element = {<EditClass/>}/>
-                    <Route path = '/classes/:id' element = {<ClassDetail/>}/>
-                    <Route path = '/teachers' element ={<Teachers/>}/>
-                    <Route path='/teachers/:id' element = {<TeacherDetail/>}/>
-                    <Route path = '/classes/:id/analytics' element= {<ClassAnalytics/>}/>
-                    <Route path = '/students/create' element = {<CreateStudent/>}/>
-                    <Route path = '/teachers/create' element = {<CreateTeacher/>}/>
+                    <Route path='/' element = {<ProtectedRoute><DashBoard/></ProtectedRoute>}/>
+                    <Route path="/classes" element={<ProtectedRoute><Classes /></ProtectedRoute>} />
+                    <Route path="/classes/new" element={<ProtectedRoute><NewClass /></ProtectedRoute>} />
+                    <Route path="/students" element={<ProtectedRoute><Students /></ProtectedRoute>} />
+                    <Route path = '/students/:id' element= {<ProtectedRoute><StudentDetail/></ProtectedRoute>}/>
+                    <Route path = '/classes/edit' element = {<ProtectedRoute><EditClass/></ProtectedRoute>}/>
+                    <Route path = '/classes/:id' element = {<ProtectedRoute><ClassDetail/></ProtectedRoute>}/>
+                    <Route path = '/teachers' element ={<ProtectedRoute><Teachers/></ProtectedRoute>}/>
+                    <Route path='/teachers/:id' element = {<ProtectedRoute><TeacherDetail/></ProtectedRoute>}/>
+                    <Route path = '/classes/:id/analytics' element= {<ProtectedRoute><ClassAnalytics/></ProtectedRoute>}/>
+                    <Route path = '/students/create' element = {<ProtectedRoute><CreateStudent/></ProtectedRoute>}/>
+                    <Route path = '/teachers/create' element = {<ProtectedRoute><CreateTeacher/></ProtectedRoute>}/>
 
                 </Routes>
             </Box>

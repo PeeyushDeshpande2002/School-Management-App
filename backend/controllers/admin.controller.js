@@ -63,13 +63,15 @@ export const getStudentFeesSum = async (req, res, next) => {
 export const deleteStudent = async(req, res) =>{
   try {
       const id = req.params.id;
+      //console.log(id);
+      
       const foundClass = await Class.findOneAndUpdate(
           { student : id },
           { $pull: { student: id } },
           { new: true }
         );
     
-        await foundClass.save()
+        //await foundClass.save()
         await Student.findByIdAndDelete(id);
     res.status(200).json({message : 'Student has been deleted!'});
   } catch (error) {

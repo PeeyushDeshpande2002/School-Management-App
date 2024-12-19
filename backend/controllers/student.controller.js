@@ -2,7 +2,9 @@ import { Class } from "../models/class.model.js";
 import { Student } from "../models/student.model.js";
 
 export const updateStudent = async(req, res) => {
+  console.log(req.body, req.params.id);
     const student= await Student.findById(req.params.id);
+    
   if (!student) {
     return next(errorHandler(404, 'Student not found!'));
   }
@@ -12,7 +14,7 @@ export const updateStudent = async(req, res) => {
       req.body,
       { new: true }
     );
-    res.status(200).json(updatedStudent);
+    res.status(200).json({message : "Student Profile Updated!", updatedStudent});
   } catch (error) {
     console.log(error.message);
     res.status(500).json(error.message)

@@ -40,15 +40,26 @@ const Login = () => {
       const data = await response.json();
         dispatch(setUser(data.user));
         enqueueSnackbar(data.message, { variant: "success" });
-        navigate(`/${role}`);
+        navigate(`/${role}`, { replace: true });
+    }
+    else {
+      // Handle error responses here
+      const errorData = await response.json(); // Parse the response body
+      enqueueSnackbar(errorData.message, { variant: "error" });
     }
    } catch (error) {
     console.log(error);
-    enqueueSnackbar("Login failed!", { variant: "error" });
+    enqueueSnackbar(error.message, { variant: "error" });
    }finally{
     dispatch(setLoading(false));
    }
   };
+  useEffect(() => {
+    // Redirect to the appropriate page if the user is already logged in
+    if (user) {
+      navigate(`/${user.role}`, { replace: true });
+    }
+  }, [user, navigate]);
 
   return (
     <Container 

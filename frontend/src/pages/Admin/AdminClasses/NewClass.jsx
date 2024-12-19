@@ -23,7 +23,7 @@ const NewClass = () => {
           loadTeachers();
         }, []);
         const handleSubmit = async(data) =>{
-           console.log(data);
+           //console.log(data);
             try {
                 const res = await fetch(`${CLASS_API_ENDPOINT}/create`, {
                     method : 'POST',
@@ -49,7 +49,8 @@ const NewClass = () => {
             { name: 'name', label: 'Class Name', type: 'text' },
             { name: 'teacher', label: 'Teacher', type: 'select', options: teachers.map(t => ({ id: t._id, label: `${t.name}` })) },
             //{ name: 'student', label: 'Students', type: 'select', options: students.map(s => ({ id: s.id, label: s.name })) },
-            {name : 'year', label : 'Year', type : 'text'}
+            {name : 'year', label : 'Year', type : 'text'},
+            {name : 'maxCount', label : 'Maximum Count of Students', type : 'number'}
         ]
   return (
     <div>
