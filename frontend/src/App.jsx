@@ -8,6 +8,8 @@ import ChooseUser from './pages/ChooseUser';
 import AdminHomePage from './pages/Admin/AdminHomePage';
 import StudentHomePage from './pages/Student/StudentHomePage';
 import TeacherHomePage from './pages/Teacher/TeacherHomePage';
+import { Profile } from './pages/Profile';
+import ProfileEdit from './pages/ProfileEdit';
 
 function App() {
   return (
@@ -19,6 +21,10 @@ function App() {
             <Route path = '/admin/*' element = {<AdminHomePage/>}/>
             <Route path = '/student' element = {<StudentHomePage/>}/>
             <Route path = '/teacher' element = {<TeacherHomePage/>}/>
+            <Route path = '/teacher/profile' element = {<Profile/>}/>
+            <Route path = '/student/profile' element = {<Profile/>}/>
+            {/* <Route path = '/student/profile/edit' element = {<ProfileEdit/>}/> */}
+            <Route path = '/profile/edit' element = {<ProfileEdit/>}/>
         </Routes>
     </Router>
 );

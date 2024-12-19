@@ -13,23 +13,6 @@ const StudentHomePage = () => {
   const{enqueueSnackbar} = useSnackbar();
   const { user, loading } =  useSelector((store) => store.auth);
   const[classes, setClasses] = useState([]);
-  const logoutHandler = async () => { 
-    try {
-      const res = await fetch("http://localhost:8000/api/user/logout", {
-        methods: "GET",
-        credentials: "include",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        dispatch(setUser(null));
-        enqueueSnackbar(data.message, { variant: "success" });
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-      enqueueSnackbar("Logout failed!", { variant: "error" });
-    }
-  };
   const studentClasses = async() => {
     try {
       const res = await fetch(`${STUDENT_API_ENDPOINT}`, {
@@ -54,7 +37,7 @@ const StudentHomePage = () => {
   ];
   return (
     <div style={{width :  1260}}>
-      <Navbar onLogout={logoutHandler}/>
+      <Navbar/>
       <Container 
       sx={{
         height: '100vh',

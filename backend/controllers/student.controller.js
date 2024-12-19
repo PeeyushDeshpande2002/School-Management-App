@@ -15,6 +15,7 @@ export const updateStudent = async(req, res) => {
     res.status(200).json(updatedStudent);
   } catch (error) {
     console.log(error.message);
+    res.status(500).json(error.message)
   }
 };
 
@@ -22,12 +23,11 @@ export const getStudentDetail = async (req, res) => {
   try {
     const studentId = req.params.studentId;
     let student = await Student.findById(studentId)
-      .populate({ path: "className", select: "name year" }).populate('teacher')
-    console.log(student);
-
-    if (student) {
+      .populate({ path: "className", select: "name year" })
+    //console.log(student);
+     if (student) {
       student.password = undefined;
-      res.send(student);
+      res.status(200).json(student);
     } else {
       res.send({ message: "No student found" });
     }
@@ -46,7 +46,7 @@ export const studentClasses = async(req, res)=>{
     res.status(200).json(classes.className)
   } catch (error) {
     console.log(error);
-    
+    res.status(500).json(error.message)
   }
 }
 

@@ -13,7 +13,7 @@ export const updateTeacher = async (req, res, next) => {
       );
       res.status(200).json(updatedTeacher);
     } catch (error) {
-      next(error);
+      res.status(500).json(error.message)
     }
   };
 
@@ -21,13 +21,16 @@ export const getTeacherDetail = async(req, res)=>{
     try {
         const id = req.params.id;
         const teacher = await Teacher.findById(id).populate('teachClasses');
-        if(!teacher){
-            return res.status(404).json({message : 'Teacher not found'});
+        if (teacher) {
+          teacher.password = undefined;
+          res.status(200).json(teacher);
         }
-        res.status(200).json(teacher);
+        else{
+          res.status(404).json({message : 'Teacher not found'});
+        }
     } catch (error) {
-        console.log(error.message);
-        
+        //console.log(error.message);
+        res.status(500).json(error.message)
     }
 }
 export const teacherClasses = async(req, res)=>{
@@ -46,7 +49,7 @@ export const teacherClasses = async(req, res)=>{
 
     res.status(200).json({classes : classes.teachClasses, classesWithStudentCount})
   } catch (error) {
-    console.log(error);
-    
+    //console.log(error);
+    res.status(500).json(error.message)
   }
 }

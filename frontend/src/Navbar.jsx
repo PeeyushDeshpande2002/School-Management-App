@@ -2,11 +2,15 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Button, Box, Menu, MenuItem, IconButton } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-const Navbar = ({ onLogout }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import {setUser, setLoading} from './redux/auth/authSlice'
+const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const{enqueueSnackbar} = useSnackbar();
+  const { user, loading } = useSelector((store) => store.auth);
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -17,12 +21,26 @@ const Navbar = ({ onLogout }) => {
 
   const handleProfileClick = () => {
     handleMenuClose();
-    navigate("/profile"); // Navigate to the profile page
-  };
 
-  const handleLogoutClick = () => {
+    navigate(`/${user.role}/profile`); // Navigate to the profile page
+  };
+  const handleLogoutClick = async() => {
     handleMenuClose();
-    onLogout(); // Call logout function
+     try {
+          const res = await fetch("http://localhost:8000/api/user/logout", {
+            methods: "GET",
+            credentials: "include",
+          });
+          if (res.ok) {
+            const data = await res.json();
+            dispatch(setUser(null));
+            enqueueSnackbar(data.message, { variant: "success" });
+            navigate("/");
+          }
+        } catch (error) {
+          console.log(error);
+          enqueueSnackbar("Logout failed!", { variant: "error" });
+        }
   };
 
   return (
