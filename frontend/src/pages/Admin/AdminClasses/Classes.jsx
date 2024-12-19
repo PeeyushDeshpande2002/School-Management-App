@@ -106,6 +106,7 @@ const Classes = () => {
         onDelete={handleDelete}
         onEdit={handleEdit}
         onRowClick={onClick}
+        actions={{edit : true, delete : true}}
       />
     </Box>
   );

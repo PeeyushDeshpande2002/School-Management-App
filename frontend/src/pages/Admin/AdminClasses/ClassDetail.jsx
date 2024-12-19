@@ -128,8 +128,8 @@ const ClassDetail = () => {
                   columns={columns}
                   data={singleClass.student}
                   onDelete={handleDelete}
-                  onEdit={handleEdit}
-                  onRowClick={onClick}/>
+                  onRowClick={onClick}
+                  actions={{delete : true}}/>
                 </Grid>
               </Grid>
             </Paper>

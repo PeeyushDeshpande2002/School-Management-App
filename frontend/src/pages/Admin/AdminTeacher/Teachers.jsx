@@ -58,7 +58,7 @@ const Teachers = () => {
         columns={columns}
         data={teachers}
         onDelete={handleDelete}
-        onEdit={handleEdit}
+        actions={{delete : true}}
         onRowClick={onClick}
       />
       <Button onClick = {()=>{navigate('/admin/teachers/create')}}>Create Teacher</Button>

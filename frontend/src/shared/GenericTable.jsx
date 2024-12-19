@@ -19,6 +19,7 @@ const GenericTable = ({
   onEdit,
   onDelete,
   onRowClick,
+  actions = {}, // Add actions prop with default empty object
 }) => {
   return (
     <Box
@@ -26,7 +27,6 @@ const GenericTable = ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        //background: "linear-gradient(to bottom, #5f2c82, #49a09d)",
         px: 2,
       }}
     >
@@ -55,9 +55,11 @@ const GenericTable = ({
                     {column.headerName}
                   </TableCell>
                 ))}
-                <TableCell sx={{ color: "#ffffff", fontWeight: "bold" }}>
-                  Actions
-                </TableCell>
+                {Object.keys(actions).length > 0 && ( // Conditionally show Actions column
+                  <TableCell sx={{ color: "#ffffff", fontWeight: "bold" }}>
+                    Actions
+                  </TableCell>
+                )}
               </TableRow>
             </TableHead>
 
@@ -66,45 +68,50 @@ const GenericTable = ({
                 <TableRow
                   key={row._id}
                   sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f3f3f3" } }}
-                  hover
+                  hover={!!onRowClick}
                   onClick={() => onRowClick && onRowClick(row)}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: onRowClick ? "pointer" : "default" }}
                 >
                   {columns.map((column) => (
                     <TableCell key={column.field}>
-                      {/* {row[column.field]} */}
                       {Array.isArray(row[column.field])
-                        ? row[column.field].join(", ") // For arrays
+                        ? row[column.field].join(", ")
                         : typeof row[column.field] === "object"
-                        ? JSON.stringify(row[column.field]) // For objects
+                        ? JSON.stringify(row[column.field])
                         : row[column.field] || "-"}
                     </TableCell>
                   ))}
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onEdit(row);
-                      }}
-                      sx={{ mr: 1 }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete(row.id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
+                  {Object.keys(actions).length > 0 && (
+                    <TableCell>
+                      {actions.edit && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(row);
+                          }}
+                          sx={{ mr: 1 }}
+                        >
+                          Edit
+                        </Button>
+                      )}
+                      {actions.delete && (
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(row.id);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>

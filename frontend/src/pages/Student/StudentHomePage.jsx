@@ -32,7 +32,6 @@ const StudentHomePage = () => {
   };
   const studentClasses = async() => {
     try {
-      console.log('I m here');
       const res = await fetch(`${STUDENT_API_ENDPOINT}`, {
         method : 'GET', 
         credentials : 'include'
@@ -59,8 +58,6 @@ const StudentHomePage = () => {
       <GenericTable
       columns={columns}
       data={classes}
-      onDelete={()=>{}}
-      onEdit={()=>{}}
       onRowClick={()=>{}}/>
     </div>
   )
