@@ -47,7 +47,7 @@ const ProfileEdit = () => {
         { name: 'dob', label: 'DOB', type: 'text', required: true },
         { name: 'contact', label: 'Contact', type: 'text', required: true },
         //{ name: 'name', label: 'Name', type: 'text', required: true },
-        { name: 'password', label: 'Password', type: 'password', required: true }
+        //{ name: 'password', label: 'Password', type: 'password', required: true }
       ]
       const teacherFields = [
         { name: 'email', label: 'Email', type: 'email', required: true },
@@ -56,7 +56,7 @@ const ProfileEdit = () => {
         { name: 'gender', label: 'Gender', type: 'text', required: true },
         { name: 'contact', label: 'Contact', type: 'text', required: true },
         //{ name: 'name', label: 'Name', type: 'text', required: true },
-        { name: 'password', label: 'Password', type: 'password', required: true }
+        //{ name: 'password', label: 'Password', type: 'password', required: true }
       ]
       let fields;
       if(user.role === 'Student')fields = studentFields;

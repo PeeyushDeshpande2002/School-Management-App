@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-const TeacherRoute = ({childern}) => {
+const TeacherRoute = ({children}) => {
     const {user} = useSelector(store => store.auth);
     const navigate = useNavigate();
     useEffect(()=>{
@@ -12,7 +12,7 @@ const TeacherRoute = ({childern}) => {
     },[]);
     return(
         <>
-        {childern}
+        {children}
         </>
     )
 };

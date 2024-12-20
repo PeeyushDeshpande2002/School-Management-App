@@ -1,6 +1,6 @@
 import { Class } from "../models/class.model.js";
 import { Student } from "../models/student.model.js";
-
+import bcrypt from "bcryptjs";
 export const updateStudent = async(req, res) => {
   console.log(req.body, req.params.id);
     const student= await Student.findById(req.params.id);
@@ -12,6 +12,7 @@ export const updateStudent = async(req, res) => {
     const updatedStudent = await Student.findByIdAndUpdate(
       req.params.id,
       req.body,
+      {password : hashedPass},
       { new: true }
     );
     res.status(200).json({message : "Student Profile Updated!", updatedStudent});

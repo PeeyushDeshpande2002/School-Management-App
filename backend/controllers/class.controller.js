@@ -199,3 +199,42 @@ export const analytics = async(req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   }
+export const removeStudentFromCLass = async (req, res) => {
+    const { classId, studentId } = req.params;
+  
+    try {
+      // Remove the student from the class document
+      const updatedClass = await Class.findByIdAndUpdate(
+        classId,
+        { $pull: { student: studentId } }, // Assuming student is an array in Class
+        { new: true }
+      );
+      console.log(updatedClass);
+      
+      if (!updatedClass) {
+        return res.status(404).json({ message: "Class not found" });
+      }
+  
+      // Remove the class from the student's className array
+      const updatedStudent = await Student.findByIdAndUpdate(
+        studentId,
+        { $pull: { className: classId } }, // Assuming className is an array in Student
+        { new: true }
+      );
+  
+      if (!updatedStudent) {
+        return res.status(404).json({ message: "Student not found" });
+      }
+  
+      res.status(200).json({
+        message: "Student removed from class successfully",
+        updatedClass,
+        updatedStudent,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
+  

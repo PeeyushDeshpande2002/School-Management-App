@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField, Typography, Paper, MenuItem, Chip, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  MenuItem,
+  Chip,
+  IconButton,
+} from "@mui/material";
 import { CLASS_API_ENDPOINT } from "../../../utils/constant";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,33 +17,57 @@ const EditClass = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { teachers: initialTeachers, students: initialStudents, row } = location.state;
-    console.log(row);
-    
-  const [teachers, setTeachers] = useState(initialTeachers || []);
-  const [students, setStudents] = useState(initialStudents || []);
-  const [selectedStudents, setSelectedStudents] = useState(row?.student || []);
+const[teachers, setTeachers] = useState([]);
+const [students, setStudents] = useState([]);
+const [selectedStudents, setSelectedStudents] = useState([])
+console.log(initialStudents, "row");
+
+useEffect(()=>{
+  const filteredTeachers = initialTeachers.filter((teacher) =>
+    !teacher.teachClasses.some((cls) => cls._id === row.id)
+  );
+  setTeachers(filteredTeachers);
+  
+  
+  const studentsInClass = initialStudents.filter((student) =>
+    student.className.some((cls) => cls._id === row.id)
+  );
+  setSelectedStudents(studentsInClass);
+  
+  const remainingStudents = initialStudents.filter((student) =>
+    !student.className.some((cls) => cls._id === row.id)
+  );
+  setStudents(remainingStudents);
+},[row.id, initialTeachers, initialStudents])
+
+
+console.log(selectedStudents, "selected");
+
   const [formData, setFormData] = useState({
-    
     name: row?.name || "",
     teacher: row?.teacher?._id || "",
     year: row?.year || "",
     classId: row?.id || "",
   });
 
-  // Handle input changes for text fields and dropdowns
+  const maxStudents = 30; // Replace with actual max count from your requirements
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  // Add a student to the selected list and remove it from the dropdown
+  console.log(formData);
+  
   const handleAddStudent = (studentId) => {
+    if (selectedStudents.length >= maxStudents) {
+      alert("Cannot add more students. Maximum limit reached.");
+      return;
+    }
     const selectedStudent = students.find((s) => s._id === studentId);
     setSelectedStudents([...selectedStudents, selectedStudent]);
     setStudents(students.filter((s) => s._id !== studentId));
   };
 
-  // Remove a student from the selected list and add it back to the dropdown
   const handleRemoveStudent = (studentId) => {
     const removedStudent = selectedStudents.find((s) => s._id === studentId);
     setStudents([...students, removedStudent]);
@@ -43,15 +76,13 @@ const EditClass = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const payload = {
         ...formData,
-        studentId: selectedStudents.map((s) => s._id), // Send array of student IDs
+        studentId: selectedStudents.map((s) => s._id),
       };
-  
-      console.log("Payload:", payload);
-  
+
       const res = await fetch(`${CLASS_API_ENDPOINT}/update`, {
         method: "POST",
         headers: {
@@ -60,9 +91,8 @@ const EditClass = () => {
         body: JSON.stringify(payload),
         credentials: "include",
       });
-  
+
       if (res.ok) {
-        console.log("Response:", await res.json());
         navigate("/Admin/classes");
       } else {
         console.error("Failed to update class:", res.statusText);
@@ -109,7 +139,8 @@ const EditClass = () => {
             margin="normal"
             variant="outlined"
           >
-            {teachers?.map((teacher) => (
+            {formData.teacher}
+            {teachers.map((teacher) => (
               <MenuItem key={teacher._id} value={teacher._id}>
                 {teacher.name}
               </MenuItem>
@@ -138,7 +169,7 @@ const EditClass = () => {
               onChange={(e) => handleAddStudent(e.target.value)}
               label="Select a student to add"
             >
-              {students && students.map((student) => (
+              {students.map((student) => (
                 <MenuItem key={student._id} value={student._id}>
                   {student.name}
                 </MenuItem>

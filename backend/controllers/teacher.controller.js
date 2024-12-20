@@ -1,17 +1,17 @@
 import { Teacher } from "../models/teacher.model.js";
-
+import bcrypt from "bcryptjs";
 export const updateTeacher = async (req, res, next) => {
     const teacher= await Teacher.findById(req.params.id);
     if (!teacher) {
       return next(errorHandler(404, 'Teacher not found!'));
     }
-    try {
+       try {
       const updatedTeacher = await Teacher.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true }
       );
-      res.status(200).json(updatedTeacher);
+      res.status(200).json({message : "Teacher edited successfully",updatedTeacher});
     } catch (error) {
       res.status(500).json(error.message)
     }

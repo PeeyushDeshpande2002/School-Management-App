@@ -43,11 +43,12 @@ const Teachers = () => {
       if(res.ok){
         const data = await res.json();
         enqueueSnackbar(data.message, {variant : 'success'})
+        loadTeachers();
       }
     } catch (error) {
       console.log(error);
       enqueueSnackbar(error.message, {variant : 'error'});
-      loadTeachers();
+      
     }
   };
   const onClick = (teacher) => {

@@ -23,7 +23,9 @@ const Classes = () => {
           id: classItem._id,
           name: classItem.name,  // Class name
           teacherName: classItem.teacher.name,  // Teacher name
-          studentCount: classItem.student.length,  // Number of students
+          studentCount: classItem.student.length, 
+          maxCount : classItem.maxCount,
+          year : classItem.year // Number of students
         }));
         //console.log(transformedData);
         setClasses(transformedData);
@@ -63,6 +65,8 @@ const Classes = () => {
     { field: "name", headerName: "Class Name" },
     { field: "teacherName", headerName: "Teacher" },
     { field: "studentCount", headerName: "Students" },
+    {field : "maxCount", headerName: "Maximum Count"},
+    {field : "year", headerName: "Year"}
   ];
   const handleDelete = async(row) => {
     try {

@@ -54,7 +54,6 @@ const AdminHomePage = () => {
                     <Route path = '/classes/:id/analytics' element= {<ProtectedRoute><ClassAnalytics/></ProtectedRoute>}/>
                     <Route path = '/students/create' element = {<ProtectedRoute><CreateStudent/></ProtectedRoute>}/>
                     <Route path = '/teachers/create' element = {<ProtectedRoute><CreateTeacher/></ProtectedRoute>}/>
-
                 </Routes>
             </Box>
         </Box>

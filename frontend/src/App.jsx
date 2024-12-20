@@ -24,12 +24,12 @@ function App() {
             <Route path='/role' element= {<ChooseUser/>}/>
             <Route path='/login' element = {<Login/>}/>
             <Route path = '/admin/*' element = {<AdminHomePage/>}/>
-            <Route path = '/student' element = {<StudentRoute><StudentHomePage/></StudentRoute>}/>
-            <Route path = '/student/class/:id' element = {<StudentRoute><StudentClassDetail/></StudentRoute>}/>
-            <Route path = '/teacher' element = {<TeacherRoute><TeacherHomePage/></TeacherRoute>}/>
+            <Route path = '/student/*' element = {<StudentHomePage/>}/>
+            {/* <Route path = '/student/class/:id' element = {<StudentRoute><StudentClassDetail/></StudentRoute>}/> */}
+            <Route path = '/teacher' element = {<TeacherHomePage/>}/>
             <Route path='/teacher/class/:id' element = {<TeacherRoute><TeacherClassDetail/></TeacherRoute>}/>
             <Route path = '/teacher/profile' element = {<TeacherRoute><Profile/></TeacherRoute>}/>
-            <Route path = '/student/profile' element = {<StudentRoute><Profile/></StudentRoute>}/>
+            {/* <Route path = '/student/profile' element = {<StudentRoute><Profile/></StudentRoute>}/> */}
             {/* <Route path = '/student/profile/edit' element = {<ProfileEdit/>}/> */}
             <Route path = '/profile/edit' element = {<ProfileEdit/>}/>
         </Routes>
