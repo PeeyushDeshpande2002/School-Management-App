@@ -12,23 +12,23 @@ import {
 import { CLASS_API_ENDPOINT } from "../../../utils/constant";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLocation, useNavigate } from "react-router-dom";
+import {  useSnackbar } from "notistack";
 
 const EditClass = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const {enqueueSnackbar} = useSnackbar();
   const { teachers: initialTeachers, students: initialStudents, row } = location.state;
-const[teachers, setTeachers] = useState([]);
-const [students, setStudents] = useState([]);
-const [selectedStudents, setSelectedStudents] = useState([])
-console.log(initialStudents, "row");
+  const[teachers, setTeachers] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
 
 useEffect(()=>{
   const filteredTeachers = initialTeachers.filter((teacher) =>
     !teacher.teachClasses.some((cls) => cls._id === row.id)
   );
   setTeachers(filteredTeachers);
-  
-  
+
   const studentsInClass = initialStudents.filter((student) =>
     student.className.some((cls) => cls._id === row.id)
   );
@@ -41,7 +41,7 @@ useEffect(()=>{
 },[row.id, initialTeachers, initialStudents])
 
 
-console.log(selectedStudents, "selected");
+
 
   const [formData, setFormData] = useState({
     name: row?.name || "",
@@ -50,13 +50,12 @@ console.log(selectedStudents, "selected");
     classId: row?.id || "",
   });
 
-  const maxStudents = 30; // Replace with actual max count from your requirements
+  const maxStudents = row.maxCount; // Replace with actual max count from your requirements
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  console.log(formData);
   
   const handleAddStudent = (studentId) => {
     if (selectedStudents.length >= maxStudents) {
@@ -73,6 +72,8 @@ console.log(selectedStudents, "selected");
     setStudents([...students, removedStudent]);
     setSelectedStudents(selectedStudents.filter((s) => s._id !== studentId));
   };
+  console.log(selectedStudents);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,12 +94,16 @@ console.log(selectedStudents, "selected");
       });
 
       if (res.ok) {
+        const data = await res.json();
         navigate("/Admin/classes");
+        enqueueSnackbar(data.message, {variant : "success"});
       } else {
-        console.error("Failed to update class:", res.statusText);
+        const errorData = await res.json(); // Parse the response body
+        enqueueSnackbar(errorData.message, { variant: "error" });
       }
     } catch (error) {
-      console.error("Error updating class:", error);
+      console.log(error);
+      enqueueSnackbar(error.message, { variant: "error" });
     }
   };
 
@@ -139,7 +144,6 @@ console.log(selectedStudents, "selected");
             margin="normal"
             variant="outlined"
           >
-            {formData.teacher}
             {teachers.map((teacher) => (
               <MenuItem key={teacher._id} value={teacher._id}>
                 {teacher.name}

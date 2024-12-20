@@ -22,7 +22,7 @@ const Classes = () => {
         const transformedData = data.map((classItem) => ({
           id: classItem._id,
           name: classItem.name,  // Class name
-          teacherName: classItem.teacher.name,  // Teacher name
+          teacherName: classItem?.teacher?.name,  // Teacher name
           studentCount: classItem.student.length, 
           maxCount : classItem.maxCount,
           year : classItem.year // Number of students

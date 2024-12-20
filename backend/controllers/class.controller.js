@@ -35,74 +35,85 @@ export const getClass = async (req, res, next) => {
 export const updateClass = async (req, res) => {
   const { classId, studentId, teacher, year, name } = req.body;
 
-  if (!classId || !studentId) {
-    return res.status(400).send("Both classId and studentId are required.");
-  }
-
   try {
-    const classData = await Class.findById(classId);
+    // Check if classId is provided and fetch the class
+    let classData;
+    if (classId) {
+      classData = await Class.findById(classId);
+      if (!classData) return res.status(404).json({ message: "Class not found." });
+    }
+    console.log(studentId);
     
-    if (!classData) return res.status(404).send("Class not found.");
+    // Check if adding the new student will exceed the class capacity
+    if (studentId.length && classData && classData.student.length > classData.maxCount) {
+      return res.status(400).json({ message: "Class is full" });
+    }
 
-    let previousTeacherId;
-    if (classData.teacher.toString() !== teacher) {
-      previousTeacherId = classData.teacher;
-
-      // Remove the classId from the old teacher
-      await Teacher.findByIdAndUpdate(previousTeacherId, {
+    // Remove classId from the previous teacher if applicable
+    if (classId && classData?.teacher && classData.teacher !== teacher) {
+      await Teacher.findByIdAndUpdate(classData.teacher, {
         $pull: { teachClasses: classId },
       });
     }
 
-    // Update class details
-    const updatedClass = await Class.findByIdAndUpdate(
-      classId,
-      {
-        $addToSet: { student: studentId },
-        teacher: teacher,
-        year: year,
-        name: name,
-      },
-      { new: true }
-    );
+    // Update class details if provided
+    const updateClassPayload = {};
+    if (studentId) updateClassPayload.$addToSet = { student: studentId };
+    if (teacher) updateClassPayload.teacher = teacher;
+    if (year) updateClassPayload.year = year;
+    if (name) updateClassPayload.name = name;
 
-    if (!updatedClass) {
-      return res.status(404).send("Class update failed.");
+    let updatedClass;
+    if (classId && Object.keys(updateClassPayload).length > 0) {
+      updatedClass = await Class.findByIdAndUpdate(
+        classId,
+        updateClassPayload,
+        { new: true }
+      );
+      if (!updatedClass) {
+        return res.status(404).json({ message: "Class update failed." });
+      }
     }
 
-    // Update student
-    const updatedStudent = await Student.findByIdAndUpdate(
-      studentId,
-      { $addToSet: { className: classId } },
-      { new: true }
-    );
-
-    if (!updatedStudent) {
-      return res.status(404).send("Student update failed.");
+    // Update student if provided
+    let updatedStudent;
+    if (studentId.length && classId) {
+      updatedStudent = await Student.findByIdAndUpdate(
+        studentId,
+        { $addToSet: { className: classId } },
+        { new: true }
+      );
+      if (!updatedStudent) {
+        return res.status(404).json({ message: "Student update failed." });
+      }
     }
 
-    // Update teacher
-    const updatedTeacher = await Teacher.findByIdAndUpdate(
-      teacher,
-      { $addToSet: { teachClasses: classId } },
-      { new: true }
-    );
-
-    if (!updatedTeacher) {
-      return res.status(404).send("Teacher update failed.");
+    // Update teacher if provided
+    let updatedTeacher;
+    if (teacher && classId) {
+      updatedTeacher = await Teacher.findByIdAndUpdate(
+        teacher,
+        { $addToSet: { teachClasses: classId } },
+        { new: true }
+      );
+      if (!updatedTeacher) {
+        return res.status(404).json({ message: "Teacher update failed." });
+      }
     }
 
     res.status(200).json({
       message: "Class updated successfully.",
-      updatedClass,
-      updatedStudent,
-      updatedTeacher,
+      ...(updatedClass && { updatedClass }),
+      ...(updatedStudent && { updatedStudent }),
+      ...(updatedTeacher && { updatedTeacher }),
     });
   } catch (error) {
     console.error("Error updating class:", error.message);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send(error.message);
   }
 };
+
+
 
 export const getClasses = async (req, res, next) => {
     try {

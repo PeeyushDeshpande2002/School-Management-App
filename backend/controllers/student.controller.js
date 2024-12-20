@@ -12,7 +12,6 @@ export const updateStudent = async(req, res) => {
     const updatedStudent = await Student.findByIdAndUpdate(
       req.params.id,
       req.body,
-      {password : hashedPass},
       { new: true }
     );
     res.status(200).json({message : "Student Profile Updated!", updatedStudent});
