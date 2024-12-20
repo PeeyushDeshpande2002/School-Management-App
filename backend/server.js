@@ -11,7 +11,7 @@ import teacherRoute from './routes/teacher.route.js';
 const app = express();
 dotenv.config({});
 const corsOptions = {
-    origin : `https://school-management-app-1-ouh1.onrender.com`,
+    origin : `https://www.schoolmanagement.webthoughts.in/`,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials : true,
