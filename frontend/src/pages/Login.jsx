@@ -29,7 +29,7 @@ const Login = () => {
     
    try {
     const response = await fetch(`${USER_API_ENDPOINT}/login`, {
-      method: "POST",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
