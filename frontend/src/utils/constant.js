@@ -1,4 +1,4 @@
-const API = 'https://www.backend.schoolmanagement.webthoughts.in'
+const API = 'https://www.backend.schoolmanagement.webthoughts.in/api'
 
 export const USER_API_ENDPOINT = `${API}/user`
 export const CLASS_API_ENDPOINT = `${API}/class`
