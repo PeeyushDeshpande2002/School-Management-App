@@ -8,7 +8,7 @@ const CreateStudent = () => {
     const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar()
   const createStudent = async(formData) =>{
-    console.log(formData);
+    //console.log(formData);
     const transformedData = {
         name : formData.name,
         role : 'Student',
@@ -30,7 +30,8 @@ const CreateStudent = () => {
         });
         if(res.ok){
             const data = await res.json();
-            console.log(data.message);
+           //
+           //  console.log(data.message);
             
            enqueueSnackbar(data.message, { variant: "success" });
             navigate('/admin/students')

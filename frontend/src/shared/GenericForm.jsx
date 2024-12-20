@@ -55,6 +55,7 @@ const GenericForm = ({ title, fields, onSubmit, defaultValues = {} }) => {
                     ))}
                   </TextField>
                 ) : (
+                  
                   <TextField
                     label={field.label}
                     name={field.name}

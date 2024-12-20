@@ -8,7 +8,7 @@ const CreateTeacher = () => {
     const navigate = useNavigate();
     const {enqueueSnackbar} = useSnackbar()
   const createTeacher = async(formData) =>{
-    console.log(formData);
+    //console.log(formData);
     const transformedData = {
         name : formData.name,
         role : 'Teacher',

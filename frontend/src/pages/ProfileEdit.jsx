@@ -15,7 +15,7 @@ const ProfileEdit = () => {
     //console.log(profile);
     const navigate = useNavigate();
     const updateProfile = async (data) => {
-      console.log(data);
+     // console.log(data);
       
         try {
           const res = await fetch(
@@ -31,7 +31,7 @@ const ProfileEdit = () => {
           );
           if (res.ok) {
             const data = await res.json();
-            console.log(data);
+            //console.log(data);
             
             enqueueSnackbar(data.message, {variant: 'success'})
             navigate(`/${user.role}/profile`)

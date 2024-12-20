@@ -16,7 +16,7 @@ const NewClass = () => {
         if(res.ok){
           const data = await res.json();
           setTeachers(data)
-          console.log(data); 
+          //console.log(data); 
         }
       }
       useEffect(() => {

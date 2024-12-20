@@ -10,7 +10,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 const StudentDetail = () => {
     const location = useLocation();
     const student = location.state;
-    console.log(student);
+    //console.log(student);
     
     if (!student) {
         return <Typography variant="h6" align="center">No Student Data Available</Typography>;

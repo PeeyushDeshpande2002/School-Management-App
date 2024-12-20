@@ -102,12 +102,6 @@ const Sidebar = () => {
       </ListItemButton>
 
       <Divider sx={{ my: 1 }} />
-
-      {/* User Section */}
-      <ListSubheader component="div" inset>
-        User
-      </ListSubheader>
-
       {/* Logout */}
       <ListItemButton component={Link} onClick={logoutHandler}>
         <ListItemIcon>

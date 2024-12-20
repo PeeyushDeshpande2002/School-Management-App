@@ -18,7 +18,7 @@ const Students = () => {
       if (res.ok) {
         const data = await res.json();
         setStudents(data || []);
-        console.log(data);
+        //console.log(data);
         
       } else {
         console.error("Failed to fetch students");
@@ -35,7 +35,7 @@ const Students = () => {
   }, []); // Dependency array to prevent repeated calls
 
   const handleDelete = async(id) => {
-    console.log(`Delete student with ID: ${id}`);
+    //console.log(`Delete student with ID: ${id}`);
     try {
       const res = await fetch(`${ADMIN_API_ENDPOINT}/student/delete/${id}`,{
         method : 'DELETE',

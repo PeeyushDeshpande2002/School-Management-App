@@ -17,12 +17,12 @@ const TeacherClassDetail = () => {
                 method : 'GET',
                 credentials : 'include'
             });
-            console.log(res);
+            //console.log(res);
             
             if(res.ok){
 
                 const data = await res.json();
-                console.log(data);
+                //console.log(data);
                 setSingleClass(data);
             }
         } catch (error) {

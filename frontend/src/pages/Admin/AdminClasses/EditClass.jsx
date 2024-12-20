@@ -72,7 +72,7 @@ useEffect(()=>{
     setStudents([...students, removedStudent]);
     setSelectedStudents(selectedStudents.filter((s) => s._id !== studentId));
   };
-  console.log(selectedStudents);
+ // console.log(selectedStudents);
   
 
   const handleSubmit = async (e) => {

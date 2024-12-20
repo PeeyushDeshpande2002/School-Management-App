@@ -43,7 +43,7 @@ const Classes = () => {
     if(res.ok){
       const data = await res.json();
       setTeachers(data)
-      console.log(data); 
+      //console.log(data); 
     }
   }
   const loadStudents = async() => {

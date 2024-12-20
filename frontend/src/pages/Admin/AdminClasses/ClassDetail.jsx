@@ -30,7 +30,7 @@ const ClassDetail = () => {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
+        //console.log(data);
         setSingleClass(data);
       }
     } catch (error) {
@@ -42,7 +42,7 @@ const ClassDetail = () => {
   }, []);
   const handleDelete = async(studentId) => {
     try {
-      console.log(studentId);
+      //console.log(studentId);
       
       const res = await fetch(
         `${CLASS_API_ENDPOINT}/${params.id}/student/${studentId}`,
@@ -54,7 +54,7 @@ const ClassDetail = () => {
   
       if (res.ok) {
         const data = await res.json();
-        console.log(data.message);
+       // console.log(data.message);
         // const updatedStudents = singleClass.student.filter(
         //   (student) => student._id !== studentId
         // );

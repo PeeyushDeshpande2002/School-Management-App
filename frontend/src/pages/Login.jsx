@@ -25,7 +25,7 @@ const Login = () => {
       password : data.password,
       role : role
     }
-    console.log(form);
+   // console.log(form);
     
    try {
     const response = await fetch(`${USER_API_ENDPOINT}/login`, {

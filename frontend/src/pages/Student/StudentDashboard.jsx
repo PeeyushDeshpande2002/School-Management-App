@@ -30,7 +30,7 @@ const StudentDashboard = () => {
     studentClasses();
   },[]);
   const onClick = (row) => {
-    console.log(row._id);
+    //console.log(row._id);
     navigate(`/student/class/${row._id}`)
   }
   const columns = [

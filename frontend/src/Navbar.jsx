@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import {setUser, setLoading} from './redux/auth/authSlice'
+import { USER_API_ENDPOINT } from "./utils/constant";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Navbar = () => {
   const handleLogoutClick = async() => {
     handleMenuClose();
      try {
-          const res = await fetch("http://localhost:8000/api/user/logout", {
+          const res = await fetch(`${USER_API_ENDPOINT}/logout`, {
             methods: "GET",
             credentials: "include",
           });
