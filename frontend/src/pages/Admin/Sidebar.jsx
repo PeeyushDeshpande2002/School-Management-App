@@ -17,6 +17,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useDispatch } from "react-redux";
 import { setUser, setLoading } from "../../redux/auth/authSlice";
 import { useSnackbar } from "notistack";
+import { USER_API_ENDPOINT } from "../../utils/constant";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Sidebar = () => {
   const { enqueueSnackbar } = useSnackbar();
   const logoutHandler = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/user/logout", {
+      const res = await fetch(`${USER_API_ENDPOINT}/logout`, {
         methods: "GET",
         credentials: "include",
       });
